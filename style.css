@@ -1,0 +1,115 @@
+/* --- Global Styles --- */
+* { box-sizing: border-box; }
+body {
+    background-color: #0a0a0a;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    overflow: hidden;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column; /* Stack vertically for mobile */
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    gap: 10px;
+}
+
+/* --- Control Panels --- */
+.ControlPanel {
+    background: #111;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.CenterControl {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 200px;
+}
+
+.Video {
+    flex: 2;
+    background: #000;
+    border: 2px solid #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+}
+
+/* --- Joystick --- */
+#joystickZone {
+    width: 160px; /* Smaller for mobile */
+    height: 160px;
+    background: #1a1a1a;
+    border: 2px solid #00ff00;
+    border-radius: 50%;
+    margin: 10px auto;
+    position: relative;
+    touch-action: none;
+}
+
+#stick {
+    width: 50px;
+    height: 50px;
+    background: #00ff00;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* --- Interactive Elements --- */
+button {
+    background: transparent;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+}
+
+.brake-btn { background: #300; color: #f00; border-color: #f00; }
+input { background: #222; border: 1px solid #444; color: #00ff00; padding: 10px; width: 100%; }
+
+.terminal {
+    background: #000;
+    font-size: 10px;
+    padding: 5px;
+    height: 80px;
+    overflow-y: auto;
+    border: 1px solid #222;
+}
+
+/* --- Tablet & Laptop Layout (Landscape/Larger Screens) --- */
+@media (min-width: 768px) {
+    .main-container {
+        flex-direction: row; /* Side-by-side for Laptop/Pad */
+    }
+    .LeftControl, .RightControl {
+        flex: 1;
+    }
+    .CenterControl {
+        flex: 3;
+    }
+    #joystickZone {
+        width: 200px;
+        height: 200px;
+    }
+    .terminal { font-size: 12px; height: 120px; }
+}
