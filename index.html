@@ -3,47 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>SumoBot Control Center</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="main-container">
-        <!-- Left: Arm & Camera Setup -->
+        <!-- Left: Systems & Camera Control -->
         <div class="ControlPanel LeftControl">
             <h2>SYSTEMS</h2>
             <div class="button-group">
-                <button class="arm-btn" onmousedown="sendArm(1)" onmouseup="sendArm(0)" ontouchstart="sendArm(1)" ontouchend="sendArm(0)">LIFT UP</button>
-                <button class="arm-btn" onmousedown="sendArm(2)" onmouseup="sendArm(0)" ontouchstart="sendArm(2)" ontouchend="sendArm(0)">LOWER DOWN</button>
-                <button class="brake-btn" onclick="emergencyStop()">BRAKE</button>
+                <button class="arm-btn" id="liftUpBtn">LIFT UP</button>
+                <button class="arm-btn" id="liftDownBtn">LOWER DOWN</button>
+                <button class="brake-btn" id="brakeBtn">EMERGENCY BRAKE</button>
             </div>
             
             <div class="camera-setup">
                 <input type="text" id="cameraIp" placeholder="Camera IP (e.g. 192.168.1.50)">
-                <button onclick="connectCamera()">CONNECT FEED</button>
+                <button id="camConnectBtn">CONNECT FEED</button>
             </div>
         </div>
 
-        <!-- Center: Video & Logs -->
+        <!-- Center: Live Feed & Logs -->
         <div class="CenterControl">
             <div class="Video" id="videoContainer">
-                <p id="camPlaceholder">NO FEED</p>
-                <img id="stream" src="" style="display:none; width:100%; height:100%; object-fit: contain;">
+                <p id="camPlaceholder">NO FEED CONNECTED</p>
+                <img id="stream" src="" alt="Stream">
             </div>
-            <div class="terminal" id="log">> System Initialized...</div>
+            <div class="terminal" id="log">> System Ready...</div>
         </div>
 
-        <!-- Right: Drive Matrix -->
+        <!-- Right: Drive Matrix Joystick -->
         <div class="ControlPanel RightControl">
             <h2>DRIVE</h2>
             <div id="joystickZone">
                 <div id="stick"></div>
             </div>
             <div class="matrix-display">
-                <code>OUT: <span id="matrixOut">[[0,0],[0,0]]</span></code>
+                <code>MATRIX: <span id="matrixOut">[[0,0],[0,0]]</span></code>
             </div>
         </div>
     </div>
 
+    <!-- Firebase SDK (v8) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="script.js"></script>
