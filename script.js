@@ -1,48 +1,61 @@
-const firebaseConfig = {
-    databaseURL: "https://sumo-bot-f0b57-default-rtdb.europe-west1.firebasedatabase.app/"
-};
+const firebaseConfig = { databaseURL: "https://sumo-bot-f0b57-default-rtdb.europe-west1.firebasedatabase.app/" };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-let isDragging = false;
+let joystickTouchId = null;
 const zone = document.getElementById('joystickZone');
 const stick = document.getElementById('stick');
 
-// --- Helper for Uninterrupted Button Press ---
+// --- Multi-Touch Button Handler ---
 function bindAction(id, onStart, onEnd) {
     const btn = document.getElementById(id);
     btn.addEventListener('touchstart', (e) => { e.preventDefault(); onStart(); }, {passive: false});
     btn.addEventListener('touchend', (e) => { e.preventDefault(); onEnd(); }, {passive: false});
-    btn.addEventListener('mousedown', onStart);
-    btn.addEventListener('mouseup', onEnd);
 }
 
 bindAction('liftUpBtn', () => sendArm(1), () => sendArm(0));
 bindAction('liftDownBtn', () => sendArm(2), () => sendArm(0));
-document.getElementById('brakeBtn').onclick = emergencyStop;
 
-// --- Joystick Logic ---
-const handleMove = (e) => {
-    if (!isDragging) return;
+// --- Joystick Logic (Multi-Touch Aware) ---
+zone.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    joystickTouchId = e.changedTouches[0].identifier;
+}, {passive: false});
+
+window.addEventListener('touchmove', (e) => {
+    let touch = null;
+    for (let t of e.touches) {
+        if (t.identifier === joystickTouchId) { touch = t; break; }
+    }
+    if (!touch) return;
+
     const rect = zone.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-    let dx = clientX - centerX;
-    let dy = clientY - centerY;
+    
+    let dx = touch.clientX - centerX;
+    let dy = touch.clientY - centerY;
+    const rad = rect.width / 2 - 10;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    const rad = rect.width / 2 - 20;
 
     if (dist > rad) { dx *= rad / dist; dy *= rad / dist; }
 
     stick.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-    sendDriveData(dx/rad, -(dy/rad));
-};
+    updateMotors(dx/rad, -(dy/rad));
+}, {passive: false});
 
-function sendDriveData(x, y) {
-    let TR = 0, TL = 0, BR = 0, BL = 0, mode = 0;
+window.addEventListener('touchend', (e) => {
+    for (let t of e.changedTouches) {
+        if (t.identifier === joystickTouchId) {
+            joystickTouchId = null;
+            stick.style.transform = 'translate(-50%, -50%)';
+            updateMotors(0, 0);
+        }
+    }
+});
+
+function updateMotors(x, y) {
+    let TR=0, TL=0, BR=0, BL=0, mode=0;
     if (Math.abs(y) > 0.1 || Math.abs(x) > 0.1) {
         if (y >= 0) {
             mode = 1;
@@ -59,15 +72,6 @@ function sendDriveData(x, y) {
 }
 
 function sendArm(v) { database.ref('controls').update({ liver: v }); }
-function emergencyStop() { isDragging = false; stick.style.transform = 'translate(-50%, -50%)'; sendDriveData(0,0); }
-
-// --- Listeners ---
-zone.addEventListener('touchstart', () => isDragging = true);
-zone.addEventListener('mousedown', () => isDragging = true);
-window.addEventListener('touchmove', handleMove, {passive: false});
-window.addEventListener('mousemove', handleMove);
-window.addEventListener('touchend', () => { isDragging = false; stick.style.transform = 'translate(-50%, -50%)'; sendDriveData(0,0); });
-window.addEventListener('mouseup', () => { isDragging = false; stick.style.transform = 'translate(-50%, -50%)'; sendDriveData(0,0); });
 
 document.getElementById('camConnectBtn').onclick = () => {
     const ip = document.getElementById('cameraIp').value;

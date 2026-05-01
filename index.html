@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SumoBot Cockpit</title>
+    <title>SumoBot Multi-Tasker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="main-container">
-        <!-- Column 1: Systems -->
+        <!-- Systems Panel -->
         <div class="ControlPanel LeftControl">
             <h2 class="neon-title">SYSTEMS</h2>
             <div class="arm-controls">
@@ -18,21 +18,21 @@
             <button class="brake-btn" id="brakeBtn">EMERGENCY BRAKE</button>
             
             <div class="camera-setup">
-                <input type="text" id="cameraIp" placeholder="Camera IP (e.g. 192.168.1.50)">
+                <input type="text" id="cameraIp" placeholder="Camera IP">
                 <button id="camConnectBtn">CONNECT FEED</button>
             </div>
         </div>
 
-        <!-- Column 2: Feed & Logs -->
+        <!-- Center Feed & Scrollable Log -->
         <div class="CenterControl">
-            <div class="Video" id="videoContainer">
+            <div class="Video">
                 <p id="camPlaceholder">NO FEED CONNECTED</p>
                 <img id="stream" src="" alt="Stream" style="display:none;">
             </div>
-            <div class="terminal" id="log">> System Ready...</div>
+            <div class="terminal" id="log">> Multi-Touch Driver Initialized...</div>
         </div>
 
-        <!-- Column 3: Drive -->
+        <!-- Drive Panel -->
         <div class="ControlPanel RightControl">
             <h2 class="neon-title">DRIVE</h2>
             <div id="joystickZone">

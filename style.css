@@ -1,10 +1,9 @@
-/* --- Global Lock & Anti-Selection --- */
 * {
     box-sizing: border-box;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-    touch-action: none; /* Critical: Stops phone from thinking you're zooming */
+    touch-action: none; /* Disables browser gestures for all elements */
 }
 
 body {
@@ -18,10 +17,9 @@ body {
     display: flex;
 }
 
-/* --- Fixed 3-Column Grid (Image_4b34f4.png Reference) --- */
 .main-container {
     display: grid;
-    grid-template-columns: 22% 53% 25%; 
+    grid-template-columns: 22% 53% 25%;
     width: 100%;
     height: 100%;
     padding: 10px;
@@ -31,7 +29,7 @@ body {
 .ControlPanel {
     background: #111;
     border: 1px solid #222;
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,71 +38,59 @@ body {
 
 .CenterControl {
     display: grid;
-    grid-template-rows: 70% 28%;
+    grid-template-rows: 65% 33%;
     gap: 2%;
 }
 
-/* --- UI Elements --- */
 .Video {
     background: #000;
     border: 1px solid #222;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
-#joystickZone {
-    width: 18vw;
-    height: 18vw;
-    max-width: 220px;
-    max-height: 220px;
-    border: 3px solid #00ff00;
-    border-radius: 50%;
-    position: relative;
-    background: radial-gradient(circle, #111, #000);
-}
+#stream { width: 100%; height: 100%; object-fit: contain; }
 
-#stick {
-    width: 30%;
-    height: 30%;
-    background: #00ff00;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 20px #00ff00;
-}
-
-button {
-    background: transparent;
-    color: #00ff00;
-    border: 1px solid #00ff00;
-    padding: 10px;
-    width: 100%;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:active { background: #00ff00; color: #000; }
-
-.brake-btn { border-color: #f00; color: #f00; height: 60px; }
-
-.camera-setup input {
-    background: #000;
-    border: 1px solid #fff;
-    color: #fff;
-    width: 100%;
-    margin-bottom: 5px;
-    padding: 8px;
-    text-align: center;
-}
-
+/* Scrollable Terminal Logic */
 .terminal {
     background: #000;
     border: 1px solid #222;
     padding: 10px;
-    font-size: 12px;
-    color: #00ff00;
+    font-size: 11px;
     overflow-y: auto;
+    touch-action: pan-y; /* Allow scrolling here only */
 }
+
+.terminal::-webkit-scrollbar { width: 5px; }
+.terminal::-webkit-scrollbar-thumb { background: #00ff00; }
+
+/* Joystick */
+#joystickZone {
+    width: 16vw;
+    height: 16vw;
+    max-width: 200px;
+    max-height: 200px;
+    border: 2px solid #00ff00;
+    border-radius: 50%;
+    position: relative;
+}
+
+#stick {
+    width: 35%; height: 35%;
+    background: #00ff00;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 15px #00ff00;
+}
+
+button {
+    background: #111; color: #00ff00; border: 1px solid #00ff00;
+    width: 100%; padding: 10px; font-weight: bold;
+}
+button:active { background: #00ff00; color: #000; }
+.brake-btn { border-color: #f00; color: #f00; }
+.camera-setup input { background: #000; border: 1px solid #fff; color: #fff; width: 100%; text-align: center; margin-bottom: 5px;}
