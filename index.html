@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>SumoBot Control Center</title>
+    <title>SumoBot Cockpit</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="main-container">
-        <!-- Left: Systems & Camera Control -->
+        <!-- Column 1: Systems -->
         <div class="ControlPanel LeftControl">
-            <h2>SYSTEMS</h2>
-            <div class="button-group">
-                <button class="arm-btn" id="liftUpBtn">LIFT UP</button>
-                <button class="arm-btn" id="liftDownBtn">LOWER DOWN</button>
-                <button class="brake-btn" id="brakeBtn">EMERGENCY BRAKE</button>
+            <h2 class="neon-title">SYSTEMS</h2>
+            <div class="arm-controls">
+                <button id="liftUpBtn">LIFT UP</button>
+                <button id="liftDownBtn">LOWER DOWN</button>
             </div>
+            <button class="brake-btn" id="brakeBtn">EMERGENCY BRAKE</button>
             
             <div class="camera-setup">
                 <input type="text" id="cameraIp" placeholder="Camera IP (e.g. 192.168.1.50)">
@@ -25,18 +23,18 @@
             </div>
         </div>
 
-        <!-- Center: Live Feed & Logs -->
+        <!-- Column 2: Feed & Logs -->
         <div class="CenterControl">
             <div class="Video" id="videoContainer">
                 <p id="camPlaceholder">NO FEED CONNECTED</p>
-                <img id="stream" src="" alt="Stream">
+                <img id="stream" src="" alt="Stream" style="display:none;">
             </div>
             <div class="terminal" id="log">> System Ready...</div>
         </div>
 
-        <!-- Right: Drive Matrix Joystick -->
+        <!-- Column 3: Drive -->
         <div class="ControlPanel RightControl">
-            <h2>DRIVE</h2>
+            <h2 class="neon-title">DRIVE</h2>
             <div id="joystickZone">
                 <div id="stick"></div>
             </div>
@@ -46,7 +44,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDK (v8) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="script.js"></script>
